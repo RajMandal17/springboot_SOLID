@@ -6,11 +6,25 @@ Get your Employee Management System running in 3 minutes!
 
 ## ⚡ Fast Setup
 
-### Step 1: Verify Java & Maven
+### Step 1: Setup MySQL Database
+
+**Quick Docker Setup (Recommended):**
 ```bash
-java -version    # Should be Java 17+
-mvn -version     # Should be Maven 3.6+
+docker run --name mysql-employee \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=employeedb \
+  -p 3306:3306 \
+  -d mysql:8.0
 ```
+
+**Or use existing MySQL:**
+```bash
+mysql -u root -p
+CREATE DATABASE employeedb;
+exit;
+```
+
+**Full setup guide:** See `MYSQL_SETUP.md`
 
 ### Step 2: Build the Project
 ```bash
@@ -27,7 +41,7 @@ mvn spring-boot:run
 ```
 ✅ Employee Management System Started Successfully!
 📍 Server running on: http://localhost:8080
-🗄️ H2 Console: http://localhost:8080/h2-console
+🗄️ Database: MySQL (employeedb)
 ```
 
 ---
@@ -175,15 +189,26 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 ---
 
-## 🗄️ Access H2 Database Console
+## 🗄️ Access MySQL Database
 
-1. Go to: `http://localhost:8080/h2-console`
-2. Use these settings:
-   - **JDBC URL:** `jdbc:h2:mem:employeedb`
-   - **Username:** `sa`
-   - **Password:** *(leave empty)*
-3. Click **Connect**
-4. Run SQL: `SELECT * FROM employees;`
+```bash
+# Connect to MySQL
+mysql -u root -p
+
+# Use database
+USE employeedb;
+
+# View tables
+SHOW TABLES;
+
+# Query data
+SELECT * FROM employees;
+```
+
+**Or using Docker:**
+```bash
+docker exec -it mysql-employee mysql -u root -proot employeedb
+```
 
 ---
 
@@ -235,6 +260,31 @@ curl -X GET http://localhost:8080/api/employees
 
 ## 🆘 Troubleshooting
 
+### MySQL Connection Failed
+
+**Error:** "Communications link failure"
+```bash
+# Check if MySQL is running
+docker ps
+
+# Or for local MySQL
+sudo systemctl status mysql
+
+# Start MySQL
+docker start mysql-employee
+# Or
+sudo systemctl start mysql
+```
+
+### Database Not Found
+
+The app will auto-create `employeedb` if URL has `createDatabaseIfNotExist=true`
+
+Or create manually:
+```sql
+CREATE DATABASE employeedb;
+```
+
 ### Port 8080 Already in Use
 ```bash
 # Find and kill process
@@ -251,14 +301,6 @@ mvn clean
 
 # Skip tests
 mvn clean install -DskipTests
-```
-
-### Java Version Issues
-```bash
-# Check Java version
-java -version
-
-# Should be Java 17 or higher
 ```
 
 ---

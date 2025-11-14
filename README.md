@@ -33,7 +33,7 @@ This is a **production-ready Employee Management System** built with:
 ✅ **SOLID Principles** at every layer  
 ✅ **4 Design Patterns** (Builder, Strategy, Factory, Repository)  
 ✅ **Global Exception Handling**  
-✅ **H2 In-Memory Database** (easy to demo)
+✅ **MySQL Database** (production-ready)
 
 ---
 
@@ -297,16 +297,29 @@ src/main/java/com/interview/employeemanagement/
 
 - Java 17+
 - Maven 3.6+
+- MySQL 8.0+ (or Docker)
 
 ### Steps
 
-1. **Clone the repository**
+1. **Setup MySQL Database**
    ```bash
-   cd /workspaces/springboot_SOLID
+   # Option 1: Using Docker (Recommended)
+   docker run --name mysql-employee \
+     -e MYSQL_ROOT_PASSWORD=root \
+     -e MYSQL_DATABASE=employeedb \
+     -p 3306:3306 \
+     -d mysql:8.0
+   
+   # Option 2: Using MySQL CLI
+   mysql -u root -p
+   CREATE DATABASE employeedb;
    ```
+   
+   **Full setup guide:** See `MYSQL_SETUP.md`
 
 2. **Build the project**
    ```bash
+   cd /workspaces/springboot_SOLID
    mvn clean install
    ```
 
@@ -317,10 +330,7 @@ src/main/java/com/interview/employeemanagement/
 
 4. **Access the application**
    - API: `http://localhost:8080/api/employees`
-   - H2 Console: `http://localhost:8080/h2-console`
-     - JDBC URL: `jdbc:h2:mem:employeedb`
-     - Username: `sa`
-     - Password: *(leave blank)*
+   - Database: MySQL `employeedb` on `localhost:3306`
 
 ---
 
@@ -427,7 +437,7 @@ public class PartTimeSalaryStrategy implements SalaryStrategy {
 
 - **Spring Boot 3.2.0** - Framework
 - **Spring Data JPA** - ORM
-- **H2 Database** - In-memory database
+- **MySQL 8.0** - Production database
 - **Lombok** - Reduce boilerplate
 - **Maven** - Build tool
 - **Java 17** - Language

@@ -4,9 +4,10 @@ This guide provides ready-to-use curl commands for testing the Employee Manageme
 
 ## Quick Start
 
-1. Start the application: `mvn spring-boot:run`
-2. Wait for: "✅ Employee Management System Started Successfully!"
-3. Use these commands to test
+1. **Start MySQL:** `docker run --name mysql-employee -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=employeedb -p 3306:3306 -d mysql:8.0`
+2. **Start the application:** `mvn spring-boot:run`
+3. **Wait for:** "✅ Employee Management System Started Successfully!"
+4. **Use these commands to test**
 
 ---
 
@@ -257,19 +258,27 @@ If you prefer Postman, import this collection:
 
 ---
 
-## 🗄️ H2 Database Console
+## 🗄️ MySQL Database Access
 
-Access: `http://localhost:8080/h2-console`
+**Using MySQL CLI:**
+```bash
+mysql -u root -p
+# Enter password: root
 
-**Settings:**
-- Driver Class: `org.h2.Driver`
-- JDBC URL: `jdbc:h2:mem:employeedb`
-- User Name: `sa`
-- Password: *(leave empty)*
-
-**Sample Query:**
-```sql
+USE employeedb;
 SELECT * FROM employees;
+```
+
+**Using Docker:**
+```bash
+docker exec -it mysql-employee mysql -u root -proot employeedb
+SELECT * FROM employees;
+```
+
+**Check Data Persistence:**
+```bash
+# Stop the app, restart it, data remains!
+mvn spring-boot:run
 ```
 
 ---

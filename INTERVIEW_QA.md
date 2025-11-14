@@ -461,20 +461,22 @@ Alternative: Pessimistic locking for critical sections."
 
 ---
 
-### Q22: "Why H2 instead of real database?"
+### Q22: "Why MySQL instead of H2?"
 
 **Answer:**
 
-"H2 is great for:
-- Quick demos
-- Local development
-- Automated tests
-- Interview presentations
+"I chose MySQL because:
+- Production-ready database
+- Data persistence across restarts
+- Real-world scenario
+- Shows enterprise experience
 
-For production, I'd use:
-- PostgreSQL or MySQL
-- Change only `application.properties`
-- No code changes needed (Spring Data JPA abstraction)"
+Benefits:
+- Widely used in industry
+- Easy to switch to other databases (PostgreSQL, etc.)
+- Just change `application.properties`
+- No code changes needed (Spring Data JPA abstraction)
+- Demonstrates understanding of production environments"
 
 ---
 
